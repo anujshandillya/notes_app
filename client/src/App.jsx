@@ -54,7 +54,6 @@ function App() {
   }
 
   async function deleteNote(note) {
-    if (!window.confirm(`Delete “${note.title}”? This cannot be undone.`)) return
     setBusy(true)
     setError('')
     setNotice('')
