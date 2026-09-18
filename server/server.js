@@ -1,26 +1,18 @@
-import express from "express";
-import cors from "cors";
-import ConnectToDB from "./config/db.js";
-import router from "./routes/NoteRoutes.js";
+import express from 'express';
+import cors from 'cors';
+import ConnectToDB from './config/db.js';
+import router from './routes/NoteRoutes.js';
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
-
-app.use("/api", router);
-
-const PORT = 6001;
-
+app.use('/api', router);
+app.use('/api', (req, res) => res.status(404).json({ message: 'Endpoint not found.' }));
 try {
-    const dbStatus = await ConnectToDB();
-    if(dbStatus == 500) {
-        throw new Error("Server did not start");
-    }
-
-    app.listen(PORT, () => {
-        console.log("Server started at PORT 6001...");
-    })
+    await ConnectToDB();
+    const port = process.env.PORT || 6001;
+    app.listen(port, () => console.log(`Server started on port ${port}`));
 } catch (error) {
-    console.error(error);
+    console.error('Server startup failed:', error.message);
+    process.exitCode = 1;
 }

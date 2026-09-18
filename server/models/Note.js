@@ -5,14 +5,13 @@ const NoteSchema = new mongoose.Schema(
         title: {
             type: String,
             required: true,
-            default: "undefined",
-            min: 5,
-            max: 100
+            trim: true,
+            maxlength: 100
         },
         content: {
             type: String,
             required: true,
-            min: 5,
+            trim: true,
         }
     },
     {
